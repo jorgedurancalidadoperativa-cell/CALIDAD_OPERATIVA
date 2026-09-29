@@ -49,3 +49,9 @@ npm run dev
 
 ## Despliegue
 Configura las variables de `.env.example` en Vercel y conecta este repositorio nuevo.
+
+
+## V3 — Login real con Supabase Auth
+Se eliminó el endpoint de login que devolvía `503 Configura Supabase Auth`.
+Ahora busca `Admin1` en `public.profiles`, valida que esté activo y autentica contra Supabase Auth mediante `admin1@calidad-operativa.local`, usando cookies SSR.
+El usuario de Auth y su registro en `public.profiles` deben existir antes del acceso.
