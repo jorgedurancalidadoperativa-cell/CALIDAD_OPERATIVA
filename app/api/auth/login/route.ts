@@ -17,13 +17,24 @@ export async function POST(request: Request) {
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
     {
       cookies: {
-        getAll() { return cookieStore.getAll(); },
+        getAll() {
+          return cookieStore.getAll();
+        },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options));
+          cookiesToSet.forEach(({ name, value, options }) => {
+            cookieStore.set(name, value, options);
+          });
         },
       },
     }
   );
+
+  const email = `${username.toLowerCase()}@calidad-operativa.local`;
+  const { error: authError } = await supabase.auth.signInWithPassword({ email, password });
+
+  if (authError) {
+    return NextResponse.json({ error: "Usuario o contraseña incorrectos." }, { status: 401 });
+  }
 
   const { data: profile, error: profileError } = await supabase
     .from("profiles")
@@ -32,17 +43,13 @@ export async function POST(request: Request) {
     .maybeSingle();
 
   if (profileError || !profile) {
-    return NextResponse.json({ error: "Usuario o contraseña incorrectos." }, { status: 401 });
+    await supabase.auth.signOut();
+    return NextResponse.json({ error: "El usuario no tiene un perfil configurado." }, { status: 403 });
   }
+
   if (!profile.active) {
+    await supabase.auth.signOut();
     return NextResponse.json({ error: "El usuario está inactivo." }, { status: 403 });
-  }
-
-  const email = `${username.toLowerCase()}@calidad-operativa.local`;
-  const { error: authError } = await supabase.auth.signInWithPassword({ email, password });
-
-  if (authError) {
-    return NextResponse.json({ error: "Usuario o contraseña incorrectos." }, { status: 401 });
   }
 
   return NextResponse.json({
