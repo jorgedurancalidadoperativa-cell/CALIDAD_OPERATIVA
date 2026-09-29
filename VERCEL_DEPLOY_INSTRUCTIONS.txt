@@ -1,0 +1,12 @@
+CALIDAD OPERATIVA V5 — DEPLOY CLEAN
+
+1) Extrae este ZIP.
+2) Sube/reemplaza el CONTENIDO de esta carpeta en la raíz del repositorio GitHub:
+   jorgedurancalidadoperativa-cell/CALIDAD_OPERATIVA
+3) Conserva package.json, scripts/prepare-build.mjs y app/login/page.tsx.
+4) La carpeta app/(auth)/login NO debe existir con page.tsx.
+5) Vercel debe ejecutar:
+   npm install
+   npm run build
+
+El prebuild elimina cualquier copia histórica de app/(auth)/login antes de next build y verifica que no haya rutas duplicadas.
