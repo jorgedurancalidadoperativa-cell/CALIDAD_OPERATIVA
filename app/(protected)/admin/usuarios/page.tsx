@@ -1,0 +1,1 @@
+export default function Page(){return <main className="shell"><div className="card"><h1>Administración de usuarios</h1><p className="muted">Módulo base de CALIDAD OPERATIVA 🥇 preparado para conectar con Supabase Auth y datos reales.</p></div></main>}
